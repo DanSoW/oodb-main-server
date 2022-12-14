@@ -1,0 +1,53 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "oodb-project/1.0.0": {
+        "dependencies": {
+          "db4o-devel": "8.1.184.15492"
+        },
+        "runtime": {
+          "oodb-project.dll": {}
+        }
+      },
+      "db4o-devel/8.1.184.15492": {
+        "runtime": {
+          "lib/net40/Db4objects.Db4o.Data.Services.dll": {
+            "assemblyVersion": "8.1.184.15492",
+            "fileVersion": "8.1.184.15492"
+          },
+          "lib/net40/Db4objects.Db4o.Linq.dll": {
+            "assemblyVersion": "8.1.184.15492",
+            "fileVersion": "8.1.184.15492"
+          },
+          "lib/net40/Db4objects.Db4o.dll": {
+            "assemblyVersion": "8.1.184.15492",
+            "fileVersion": "8.1.184.15492"
+          },
+          "lib/net40/Mono.Reflection.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "oodb-project/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "db4o-devel/8.1.184.15492": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BM63/VePK85KCCu6BC+lngwCLTZLtN2MX7dtqaKCSoqu09t9UqdVW/+OR3J2g5bFBiz2XAjdQwCS11JJBKV8PA==",
+      "path": "db4o-devel/8.1.184.15492",
+      "hashPath": "db4o-devel.8.1.184.15492.nupkg.sha512"
+    }
+  }
+}

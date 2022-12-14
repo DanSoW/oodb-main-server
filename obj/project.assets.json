@@ -1,0 +1,215 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "db4o-devel/8.1.184.15492": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Db4objects.Db4o.Data.Services.dll": {},
+          "lib/net40/Db4objects.Db4o.Linq.dll": {},
+          "lib/net40/Db4objects.Db4o.dll": {},
+          "lib/net40/Mono.Reflection.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Db4objects.Db4o.Data.Services.dll": {},
+          "lib/net40/Db4objects.Db4o.Linq.dll": {},
+          "lib/net40/Db4objects.Db4o.dll": {},
+          "lib/net40/Mono.Reflection.dll": {}
+        }
+      },
+      "Newtonsoft.Json/13.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "websocketsharp.core/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/websocket-sharp-core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/websocket-sharp-core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "db4o-devel/8.1.184.15492": {
+      "sha512": "BM63/VePK85KCCu6BC+lngwCLTZLtN2MX7dtqaKCSoqu09t9UqdVW/+OR3J2g5bFBiz2XAjdQwCS11JJBKV8PA==",
+      "type": "package",
+      "path": "db4o-devel/8.1.184.15492",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "db4o-devel.8.1.184.15492.nupkg.sha512",
+        "db4o-devel.nuspec",
+        "lib/net35/Db4objects.Db4o.Data.Services.dll",
+        "lib/net35/Db4objects.Db4o.Linq.dll",
+        "lib/net35/Db4objects.Db4o.dll",
+        "lib/net35/Db4objects.Db4o.xml",
+        "lib/net35/Mono.Reflection.dll",
+        "lib/net40/Db4objects.Db4o.Data.Services.dll",
+        "lib/net40/Db4objects.Db4o.Linq.dll",
+        "lib/net40/Db4objects.Db4o.dll",
+        "lib/net40/Db4objects.Db4o.xml",
+        "lib/net40/Mono.Reflection.dll",
+        "lib/sl30/Cecil.FlowAnalysis.dll",
+        "lib/sl30/Cecil.FlowAnalysis.license.html",
+        "lib/sl30/Db4objects.Db4o.Linq.dll",
+        "lib/sl30/Db4objects.Db4o.dll",
+        "lib/sl30/Mono.Cecil.dll",
+        "lib/sl30/Mono.Cecil.license.html",
+        "lib/sl40/Cecil.FlowAnalysis.dll",
+        "lib/sl40/Cecil.FlowAnalysis.license.html",
+        "lib/sl40/Db4objects.Db4o.Linq.dll",
+        "lib/sl40/Db4objects.Db4o.dll",
+        "lib/sl40/Mono.Cecil.dll",
+        "lib/sl40/Mono.Cecil.license.html"
+      ]
+    },
+    "Newtonsoft.Json/13.0.2": {
+      "sha512": "R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.2.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "websocketsharp.core/1.0.0": {
+      "sha512": "Pdr9TtOtlaxKI6XtuHdRBrxFsBPCpqxNerAFbpdb2K7foBMYJmUOV+wqhklZilphtFjxT5zN1X6X3iyG/OovAQ==",
+      "type": "package",
+      "path": "websocketsharp.core/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/websocket-sharp-core.dll",
+        "websocketsharp.core.1.0.0.nupkg.sha512",
+        "websocketsharp.core.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "Newtonsoft.Json >= 13.0.2",
+      "db4o-devel >= 8.1.184.15492",
+      "websocketsharp.core >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\DNS\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Projects\\Learning\\oodb-project\\oodb-project.csproj",
+      "projectName": "oodb-project",
+      "projectPath": "C:\\Projects\\Learning\\oodb-project\\oodb-project.csproj",
+      "packagesPath": "C:\\Users\\DNS\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\Learning\\oodb-project\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\DNS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "dependencies": {
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.2, )"
+          },
+          "db4o-devel": {
+            "target": "Package",
+            "version": "[8.1.184.15492, )"
+          },
+          "websocketsharp.core": {
+            "target": "Package",
+            "version": "[1.0.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Пакет \"db4o-devel 8.1.184.15492\" был восстановлен с помощью \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8\", а не целевой платформы проекта \"net6.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
+      "libraryId": "db4o-devel",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
+}

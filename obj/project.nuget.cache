@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "YRT1WIlWaM5Ks6zdUHrtm1rQTFqgWf/4bq9N/DSnOyLEwiXp6dwni3PO5DpNrueMCep7rNYPhtr4R8EKFkMMaA==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\Learning\\oodb-project\\oodb-project.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\DNS\\.nuget\\packages\\db4o-devel\\8.1.184.15492\\db4o-devel.8.1.184.15492.nupkg.sha512",
+    "C:\\Users\\DNS\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
+    "C:\\Users\\DNS\\.nuget\\packages\\websocketsharp.core\\1.0.0\\websocketsharp.core.1.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Пакет \"db4o-devel 8.1.184.15492\" был восстановлен с помощью \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8\", а не целевой платформы проекта \"net6.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
+      "libraryId": "db4o-devel",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
+}

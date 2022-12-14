@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>oodb_project</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="db4o-devel" Version="8.1.184.15492" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="websocketsharp.core" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="controllers\perst\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Perst.NET">
+      <HintPath>..\..\..\Perst4.NET\bin\Perst.NET.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
