@@ -2,6 +2,7 @@
 using Db4objects.Db4o;
 using Newtonsoft.Json;
 using oodb_project.controllers.db4o;
+using oodb_project.controllers.perst;
 using oodb_project.data;
 using oodb_project.models;
 using System.Net;
@@ -36,40 +37,9 @@ mockData.generateData();
 var initDb4oController = new InitDb4oController(app, dbDb4o);
 initDb4oController.InitRoutes();
 
-object ByteArrayToObject(byte[] arrBytes)
-{
-    MemoryStream memStream = new MemoryStream();
-    BinaryFormatter binForm = new BinaryFormatter();
-    memStream.Write(arrBytes, 0, arrBytes.Length);
-    memStream.Seek(0, SeekOrigin.Begin);
-#pragma warning disable SYSLIB0011 
-    var obj = binForm.Deserialize(memStream);
-#pragma warning restore SYSLIB0011
-
-    return obj;
-}
-
-using (var ws = new WebSocket("ws://127.0.0.1/Laputa"))
-{
-    // Добавление обработчика на конкретное сообщение
-    ws.OnMessage += (sender, e) =>
-    {
-        var admin = JsonConvert.DeserializeObject<AdminModel>(e.Data);
-
-        if(admin != null)
-        {
-            Console.WriteLine(admin.Id);
-        }
-    };
-    
-    // Подключение по WebSocket-соединению к приложению
-    ws.Connect();
-
-    // Отправка данных
-    ws.Send("BALUS");
-
-    Console.ReadKey();
-}
+/* Инициализация маршрутов для работы с ООДБ perst */
+var initPerstController = new InitPerstController(app);
+initPerstController.InitRoutes();
 
 /* Запуск серверного приложения */
 app.Run();

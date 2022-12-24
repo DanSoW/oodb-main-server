@@ -25,12 +25,12 @@ namespace oodb_project.data
 
         public void generateHosts()
         {
-            if(_db == null)
+            if (_db == null)
             {
                 return;
             }
 
-            foreach(var item in hosts)
+            foreach (var item in hosts)
             {
                 _db.Store(item);
             }

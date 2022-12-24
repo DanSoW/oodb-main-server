@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="controllers\perst\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Perst.NET">
       <HintPath>..\..\..\Perst4.NET\bin\Perst.NET.dll</HintPath>
     </Reference>
