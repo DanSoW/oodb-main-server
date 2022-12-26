@@ -29,8 +29,7 @@
 
         static public string API_GET_SERVICE            = "/api/perst/service/get/{id}";
         static public string API_GET_ALL_SERVICE        = "/api/perst/service/get/all";
-        static public string API_COMPLEX_SERVICE        = "/api/perst/service/get/all/complex";
-        static public string API_COMPLEX_LINQ_SERVICE   = "/api/perst/service/get/all/complex-linq";
+        static public string API_GET_ALL_BY_PORT        = "/api/perst/service/get/by/port/{port}";
 
         static public string API_GET_HOST_SERVICE       = "/api/perst/host-service/get/{id}";
         static public string API_GET_ALL_HOST_SERVICE   = "/api/perst/host-service/get/all";

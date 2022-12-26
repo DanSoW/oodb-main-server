@@ -32,7 +32,6 @@ namespace oodb_project.controllers.perst
             /* CRUD операции для HostModel */
             /* ----------- */
             var hostController = new HostController();
-
             _app.MapPost(ApiPerstUrl.API_SAVE_HOST, hostController.create);
             _app.MapPost(ApiPerstUrl.API_UPDATE_HOST, hostController.update);
             _app.MapPost(ApiPerstUrl.API_DELETE_HOST, hostController.delete);
@@ -43,7 +42,6 @@ namespace oodb_project.controllers.perst
             /* CRUD операции для DataSource */
             /* ----------- */
             var dataSourceController = new DataSourceController();
-
             _app.MapPost(ApiPerstUrl.API_SAVE_DATA_SOURCE, dataSourceController.create);
             _app.MapPost(ApiPerstUrl.API_UPDATE_DATA_SOURCE, dataSourceController.update);
             _app.MapPost(ApiPerstUrl.API_DELETE_DATA_SOURCE, dataSourceController.delete);
@@ -54,18 +52,17 @@ namespace oodb_project.controllers.perst
             /* CRUD операции для Service */
             /* ----------- */
             var serviceController = new ServiceController();
-
             _app.MapPost(ApiPerstUrl.API_SAVE_SERVICE, serviceController.create);
             _app.MapPost(ApiPerstUrl.API_UPDATE_SERVICE, serviceController.update);
             _app.MapPost(ApiPerstUrl.API_DELETE_SERVICE, serviceController.delete);
             _app.MapGet(ApiPerstUrl.API_GET_SERVICE, serviceController.get);
             _app.MapGet(ApiPerstUrl.API_GET_ALL_SERVICE, serviceController.getAll);
+            _app.MapGet(ApiPerstUrl.API_GET_ALL_BY_PORT, serviceController.getByPort);
 
             /* ----------- */
             /* CRUD операции для HostService */
             /* ----------- */
             var hostServiceController = new HostServiceController();
-
             _app.MapPost(ApiPerstUrl.API_SAVE_HOST_SERVICE, hostServiceController.create);
             _app.MapPost(ApiPerstUrl.API_UPDATE_HOST_SERVICE, hostServiceController.update);
             _app.MapPost(ApiPerstUrl.API_DELETE_HOST_SERVICE, hostServiceController.delete);
@@ -76,7 +73,6 @@ namespace oodb_project.controllers.perst
             /* CRUD операции для MonitorApp */
             /* ----------- */
             var monitorAppController = new MonitorAppController();
-
             _app.MapPost(ApiPerstUrl.API_SAVE_MONITOR_APP, monitorAppController.create);
             _app.MapPost(ApiPerstUrl.API_UPDATE_MONITOR_APP, monitorAppController.update);
             _app.MapPost(ApiPerstUrl.API_DELETE_MONITOR_APP, monitorAppController.delete);

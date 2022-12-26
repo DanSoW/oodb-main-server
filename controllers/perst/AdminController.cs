@@ -9,9 +9,49 @@ namespace oodb_project.controllers.perst
         /// <summary>
         /// Обновление объекта AdminModel
         /// </summary>
-        public Func<AdminModel, IResult> update = (newData) =>
+        public Func<AdminModel, IResult> update = (data) =>
         {
-            return Results.Json("");
+            // Флаг задержки
+            var flag = false;
+
+            // Выходные данные
+            object? outputData = null;
+
+            using (var ws = new WebSocket("ws://127.0.0.1/admin"))
+            {
+                // Обработка получения сообщения с стороннего сервиса
+                ws.OnMessage += (sender, e) =>
+                {
+                    outputData = JsonConvert.DeserializeObject<AdminModel>(e.Data);
+
+                    if(((AdminModel?)outputData)?.Id == null)
+                    {
+                        outputData = JsonConvert.DeserializeObject<MessageModel>(e.Data);
+                    }
+
+                    flag = true;
+                };
+
+                // Подключение по WebSocket-соединению к приложению
+                ws.Connect();
+
+                ws.Send(JsonConvert.SerializeObject(
+                    new HttpModel(
+                        "/update",
+                        JsonConvert.SerializeObject(data)
+                    )
+                ));
+
+                // Бесконечный цикл для создания задержки обработки сообщения
+                while (!flag)
+                {
+                    // bug(): если убрать Console.WriteLine бесконечный цикл будет длится вечно
+                    Console.WriteLine(flag);
+                }
+
+            }
+
+            return Results.Json(outputData);
         };
 
         /// <summary>
@@ -23,7 +63,7 @@ namespace oodb_project.controllers.perst
             var flag = false;
 
             // Выходные данные
-            AdminModel? outputData = null;
+            object? outputData = null;
 
             using (var ws = new WebSocket("ws://127.0.0.1/admin"))
             {
@@ -31,6 +71,12 @@ namespace oodb_project.controllers.perst
                 ws.OnMessage += (sender, e) =>
                 {
                     outputData = JsonConvert.DeserializeObject<AdminModel>(e.Data);
+
+                    if (((AdminModel?)outputData)?.Id == null)
+                    {
+                        outputData = JsonConvert.DeserializeObject<MessageModel>(e.Data);
+                    }
+
                     flag = true;
                 };
 
@@ -98,7 +144,39 @@ namespace oodb_project.controllers.perst
         /// </summary>
         public Func<string, IResult> get = (id) =>
         {
-            return Results.Json("");
+            var flag = false;
+            object? outputData = null;
+
+            using (var ws = new WebSocket("ws://127.0.0.1/admin"))
+            {
+                ws.OnMessage += (sender, e) =>
+                {
+                    outputData = JsonConvert.DeserializeObject<AdminModel>(e.Data);
+
+                    if (((AdminModel?)outputData)?.Id == null)
+                    {
+                        outputData = JsonConvert.DeserializeObject<MessageModel>(e.Data);
+                    }
+
+                    flag = true;
+                };
+
+                ws.Connect();
+
+                ws.Send(JsonConvert.SerializeObject(
+                    new HttpModel(
+                        "/get",
+                        id
+                    )
+                ));
+
+                while (!flag)
+                {
+                    Console.WriteLine(flag);
+                }
+            }
+
+            return Results.Json(outputData);
         };
 
         /// <summary>
@@ -106,7 +184,40 @@ namespace oodb_project.controllers.perst
         /// </summary>
         public Func<string, IResult> delete = (id) =>
         {
-            return Results.Json("");
+            var flag = false;
+            object? outputData = null;
+
+            using (var ws = new WebSocket("ws://127.0.0.1/admin"))
+            {
+                ws.OnMessage += (sender, e) =>
+                {
+                    outputData = JsonConvert.DeserializeObject<AdminModel>(e.Data);
+
+                    if (((AdminModel?)outputData)?.Id == null)
+                    {
+                        outputData = JsonConvert.DeserializeObject<MessageModel>(e.Data);
+                    }
+
+                    flag = true;
+                };
+
+                ws.Connect();
+
+                ws.Send(JsonConvert.SerializeObject(
+                    new HttpModel(
+                        "/delete",
+                        id
+                    )
+                ));
+
+                while (!flag)
+                {
+                    Console.WriteLine(flag);
+                }
+
+            }
+
+            return Results.Json(outputData);
         };
     }
 }
