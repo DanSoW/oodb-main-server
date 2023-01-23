@@ -8,10 +8,10 @@
     ".NETCoreApp,Version=v6.0": {
       "oodb-project/1.0.0": {
         "dependencies": {
+          "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.15.1",
           "Newtonsoft.Json": "13.0.2",
           "db4o-devel": "8.1.184.15492",
-          "websocketsharp.core": "1.0.0",
-          "Perst.NET": "1.0.6668.527"
+          "websocketsharp.core": "1.0.0"
         },
         "runtime": {
           "oodb-project.dll": {}
@@ -37,6 +37,7 @@
           }
         }
       },
+      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.15.1": {},
       "Newtonsoft.Json/13.0.2": {
         "runtime": {
           "lib/net6.0/Newtonsoft.Json.dll": {
@@ -50,14 +51,6 @@
           "lib/netstandard2.0/websocket-sharp-core.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "Perst.NET/1.0.6668.527": {
-        "runtime": {
-          "Perst.NET.dll": {
-            "assemblyVersion": "1.0.6668.527",
-            "fileVersion": "1.0.6668.527"
           }
         }
       }
@@ -76,6 +69,13 @@
       "path": "db4o-devel/8.1.184.15492",
       "hashPath": "db4o-devel.8.1.184.15492.nupkg.sha512"
     },
+    "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.15.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dcsF7rjxvMnqtfckpzWYvBsZsJD51yQVHSSgd2EN5/CJ/zQigJrfo313lvAwf0VL9ZOHLnJthuboadjnBAU7Ng==",
+      "path": "microsoft.visualstudio.azure.containers.tools.targets/1.15.1",
+      "hashPath": "microsoft.visualstudio.azure.containers.tools.targets.1.15.1.nupkg.sha512"
+    },
     "Newtonsoft.Json/13.0.2": {
       "type": "package",
       "serviceable": true,
@@ -89,11 +89,6 @@
       "sha512": "sha512-Pdr9TtOtlaxKI6XtuHdRBrxFsBPCpqxNerAFbpdb2K7foBMYJmUOV+wqhklZilphtFjxT5zN1X6X3iyG/OovAQ==",
       "path": "websocketsharp.core/1.0.0",
       "hashPath": "websocketsharp.core.1.0.0.nupkg.sha512"
-    },
-    "Perst.NET/1.0.6668.527": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

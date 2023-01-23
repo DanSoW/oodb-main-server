@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Learning\\oodb-project\\oodb-project.csproj": {}
+    "C:\\Projects\\Learning\\oodb\\oodb-project\\oodb-project.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Learning\\oodb-project\\oodb-project.csproj": {
+    "C:\\Projects\\Learning\\oodb\\oodb-project\\oodb-project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Learning\\oodb-project\\oodb-project.csproj",
+        "projectUniqueName": "C:\\Projects\\Learning\\oodb\\oodb-project\\oodb-project.csproj",
         "projectName": "oodb-project",
-        "projectPath": "C:\\Projects\\Learning\\oodb-project\\oodb-project.csproj",
+        "projectPath": "C:\\Projects\\Learning\\oodb\\oodb-project\\oodb-project.csproj",
         "packagesPath": "C:\\Users\\DNS\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Learning\\oodb-project\\obj\\",
+        "outputPath": "C:\\Projects\\Learning\\oodb\\oodb-project\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,6 +44,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.15.1, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.2, )"

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "YRT1WIlWaM5Ks6zdUHrtm1rQTFqgWf/4bq9N/DSnOyLEwiXp6dwni3PO5DpNrueMCep7rNYPhtr4R8EKFkMMaA==",
+  "dgSpecHash": "3wUchkD/H2u3Fzm7LbsWjo8MSVWkLmgaYqkA9VQPqNOsK0iCK6zYayM9hO7NrRBe7JNxnlWYfMV1IqstdBOPPg==",
   "success": true,
-  "projectFilePath": "C:\\Projects\\Learning\\oodb-project\\oodb-project.csproj",
+  "projectFilePath": "C:\\Projects\\Learning\\oodb\\oodb-project\\oodb-project.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DNS\\.nuget\\packages\\db4o-devel\\8.1.184.15492\\db4o-devel.8.1.184.15492.nupkg.sha512",
+    "C:\\Users\\DNS\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.15.1\\microsoft.visualstudio.azure.containers.tools.targets.1.15.1.nupkg.sha512",
     "C:\\Users\\DNS\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
     "C:\\Users\\DNS\\.nuget\\packages\\websocketsharp.core\\1.0.0\\websocketsharp.core.1.0.0.nupkg.sha512"
   ],

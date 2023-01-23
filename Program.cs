@@ -2,6 +2,7 @@
 using Db4objects.Db4o;
 using Newtonsoft.Json;
 using oodb_project.controllers.db4o;
+using oodb_project.controllers.mongo;
 using oodb_project.controllers.perst;
 using oodb_project.data;
 using oodb_project.models;
@@ -40,6 +41,10 @@ initDb4oController.InitRoutes();
 /* Инициализация маршрутов для работы с ООДБ perst */
 var initPerstController = new InitPerstController(app);
 initPerstController.InitRoutes();
+
+/* Инициализация маршрутов для работы с mongodb */
+var initMongoController = new InitMongoController(app);
+initMongoController.InitRoutes();
 
 /* Запуск серверного приложения */
 app.Run();

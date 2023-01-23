@@ -3,20 +3,18 @@
     /// <summary>
     /// Модель связки конкретных сервисов с конкретными хостами
     /// </summary>
-    public class HostServiceModel
+    public class HostServiceModel : IdModel
     {
-        public HostServiceModel()
+        public HostServiceModel() : base()
         {
         }
 
-        public HostServiceModel(string? id, string? hostId, string? serviceId)
+        public HostServiceModel(string? id, string? hostId, string? serviceId) : base(id)
         {
-            Id = id;
             HostId = hostId;
             ServiceId = serviceId;
         }
 
-        public string? Id { get; set; }
         public string? HostId { get; set; }
         public string? ServiceId { get; set; }
     }
