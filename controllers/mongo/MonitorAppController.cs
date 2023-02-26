@@ -6,6 +6,9 @@ using oodb_project.models.MonitorApp;
 
 namespace oodb_project.controllers.mongo
 {
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов MonitorApp
+    /// </summary>
     public class MonitorAppController : BaseController<MonitorAppModel>
     {
         public static string LOCAL_URL = "/monitor-app";

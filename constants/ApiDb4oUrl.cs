@@ -1,5 +1,8 @@
 ﻿namespace oodb_project.constants
 {
+    /// <summary>
+    /// Класс, содержащий константы для маршрутов API базы данных db4o
+    /// </summary>
     public class ApiDb4oUrl
     {
         /* Запросы на сохранение данных */

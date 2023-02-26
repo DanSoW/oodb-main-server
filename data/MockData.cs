@@ -3,6 +3,9 @@ using oodb_project.models;
 
 namespace oodb_project.data
 {
+    /// <summary>
+    /// Класс, определяющий тестовые данные для базы данных db4o
+    /// </summary>
     public class MockData
     {
         private static IObjectContainer? _db;

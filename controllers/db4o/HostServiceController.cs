@@ -4,19 +4,19 @@ using oodb_project.models;
 
 namespace oodb_project.controllers.db4o
 {
-    public class HostServiceController
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов HostService
+    /// </summary>
+    public class HostServiceController : BaseController<HostServiceModel>
     {
-        private static IObjectContainer? _db;
-
-        public HostServiceController(IObjectContainer db)
-        {
-            _db = db;
-        }
+        public HostServiceController(IObjectContainer db) : base(db) { }
 
         /// <summary>
-        /// Обновление объекта HostServiceModel
+        /// Обновление объекта в коллекции
         /// </summary>
-        public Func<HostServiceModel, IResult> update = (newData) =>
+        /// <param name="data">Новые данные объекта</param>
+        /// <returns>Обновлённый объект</returns>
+        public IResult Update(HostServiceModel data)
         {
             if (_db == null)
             {
@@ -25,43 +25,45 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                IList<HostServiceModel> list1 = _db.Query<HostServiceModel>(value => value.Id == newData.Id);
-                if (list1.Count == 0)
+                IList<HostServiceModel> list1 = _db.Query<HostServiceModel>(value => value.Id == data.Id);
+                if (list1.Count <= 0)
                 {
-                    return Results.Json(new MessageModel($"Ошибка: объекта типа HostServiceModel с id = {newData.Id} не найдено!"));
+                    return Results.Json(new MessageModel($"Ошибка: объекта типа HostServiceModel с id = {data.Id} не найдено!"));
                 }
 
-                HostServiceModel data = list1[0];
+                HostServiceModel hostService = list1[0];
 
-                IList<HostModel> list2 = _db.Query<HostModel>(value => value.Id == newData.HostId);
-                if (list2.Count == 0)
+                IList<HostModel> list2 = _db.Query<HostModel>(value => value.Id == hostService.HostId);
+                if (list2.Count <= 0)
                 {
-                    return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {newData.HostId} не найдено!"));
+                    return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {hostService.HostId} не найдено!"));
                 }
 
-                IList<ServiceModel> list3 = _db.Query<ServiceModel>(value => value.Id == newData.ServiceId);
-                if (list3.Count == 0)
+                IList<ServiceModel> list3 = _db.Query<ServiceModel>(value => value.Id == hostService.ServiceId);
+                if (list3.Count <= 0)
                 {
-                    return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {newData.ServiceId} не найдено!"));
+                    return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {hostService.ServiceId} не найдено!"));
                 }
 
-                data.HostId = newData.HostId;
-                data.ServiceId = newData.ServiceId;
+                hostService.HostId = data.HostId;
+                hostService.ServiceId = data.ServiceId;
 
-                _db.Store(data);
+                _db.Store(hostService);
             }
             catch (Exception e)
             {
                 return Results.Json(new MessageModel(e.Message));
             }
 
-            return Results.Json(newData);
-        };
+            return Results.Json(data);
+        }
 
         /// <summary>
-        /// Создание объекта HostServiceModel
+        /// Создание нового объекта в коллекции
         /// </summary>
-        public Func<HostServiceModel, IResult> create = (data) =>
+        /// <param name="data">Данные объекта</param>
+        /// <returns>Созданный объект</returns>
+        public new IResult Create(HostServiceModel data)
         {
             if (_db == null)
             {
@@ -74,13 +76,13 @@ namespace oodb_project.controllers.db4o
                 data.Id = Guid.NewGuid().ToString();
 
                 IList<HostModel> list2 = _db.Query<HostModel>(value => value.Id == data.HostId);
-                if (list2.Count == 0)
+                if (list2.Count <= 0)
                 {
                     return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {data.HostId} не найдено!"));
                 }
 
                 IList<ServiceModel> list3 = _db.Query<ServiceModel>(value => value.Id == data.ServiceId);
-                if (list3.Count == 0)
+                if (list3.Count <= 0)
                 {
                     return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {data.ServiceId} не найдено!"));
                 }
@@ -94,12 +96,15 @@ namespace oodb_project.controllers.db4o
             }
 
             return Results.Json(data);
-        };
+        }
+
+
 
         /// <summary>
-        /// Получение объекта HostServiceModel
+        /// Получение всех объектов из коллекции с помощью SODA-запроса
         /// </summary>
-        public Func<string, IResult> get = (id) =>
+        /// <returns>Список объектов из коллекции</returns>
+        public new IResult GetAll()
         {
             if (_db == null)
             {
@@ -108,29 +113,6 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                HostServiceModel data = _db.Query<HostServiceModel>(value => value.Id == id)[0];
-
-                return Results.Json(data);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-        };
-
-        /// <summary>
-        /// Получение всех объектов HostServiceModel
-        /// </summary>
-        public Func<IResult> getAll = () =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Получение всех записей из DataSource с помощью SODA-запроса
                 IQuery query = _db.Query();
                 query.Constrain(typeof(HostServiceModel));
 
@@ -142,30 +124,6 @@ namespace oodb_project.controllers.db4o
             {
                 return Results.Json(new MessageModel(e.Message));
             }
-        };
-
-        /// <summary>
-        /// Удаление объекта HostServiceModel
-        /// </summary>
-        public Func<string, IResult> delete = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Получение конкретной модели
-                HostServiceModel data = _db.Query<HostServiceModel>(value => value.Id == id)[0];
-                _db.Delete(data);
-
-                return Results.Json(data);
-            }
-            catch (Exception)
-            {
-                return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
-            }
-        };
+        }
     }
 }

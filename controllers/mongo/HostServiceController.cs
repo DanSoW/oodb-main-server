@@ -4,6 +4,9 @@ using oodb_project.models;
 
 namespace oodb_project.controllers.mongo
 {
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов HostService
+    /// </summary>
     public class HostServiceController : BaseController<HostServiceModel>
     {
         public static string LOCAL_URL = "/host-service";

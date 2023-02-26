@@ -2,6 +2,9 @@
 
 namespace oodb_project.controllers.mongo
 {
+    /// <summary>
+    /// Класс, содержащий методы для инициализации маршрутов в рамках работы с базой данных MongoDB
+    /// </summary>
     public class InitMongoController
     {
         private static WebApplication? _app;

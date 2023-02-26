@@ -1,5 +1,8 @@
 ﻿namespace oodb_project.constants
 {
+    /// <summary>
+    /// Класс, содержащий константы для маршрутов API базы данных MongoDB
+    /// </summary>
     public class ApiMongoUrl
     {
         /* Запросы на сохранение данных */

@@ -4,213 +4,57 @@ using WebSocketSharp;
 
 namespace oodb_project.controllers.perst
 {
-    public class HostController
+    public class HostController : BaseController<HostModel>
     {
-        /// <summary>
-        /// Обновление объекта HostModel
-        /// </summary>
-        public Func<HostModel, IResult> update = (data) =>
-        {
-            // Флаг задержки
-            var flag = false;
-
-            // Выходные данные
-            object? outputData = null;
-
-            using (var ws = new WebSocket("ws://127.0.0.1/host"))
-            {
-                // Обработка получения сообщения с стороннего сервиса
-                ws.OnMessage += (sender, e) =>
-                {
-                    outputData = JsonConvert.DeserializeObject<HostModel>(e.Data);
-
-                    if (((HostModel?)outputData)?.Id == null)
-                    {
-                        outputData = JsonConvert.DeserializeObject<MessageModel>(e.Data);
-                    }
-
-                    flag = true;
-                };
-
-                // Подключение по WebSocket-соединению к приложению
-                ws.Connect();
-
-                ws.Send(JsonConvert.SerializeObject(
-                    new HttpModel(
-                        "/update",
-                        JsonConvert.SerializeObject(data)
-                    )
-                ));
-
-                // Бесконечный цикл для создания задержки обработки сообщения
-                while (!flag)
-                {
-                    // bug(): если убрать Console.WriteLine бесконечный цикл будет длится вечно
-                    Console.WriteLine(flag);
-                }
-
-            }
-
-            return Results.Json(outputData);
-        };
+        public HostController() : base("ws://127.0.0.1/host") { }
 
         /// <summary>
-        /// Создание объекта AdminModel
+        /// Обновление объекта в коллекции
         /// </summary>
-        public Func<HostModel, IResult> create = (data) =>
+        /// <param name="data">Новые данные объекта в коллекции</param>
+        /// <returns>Обновлённый объект</returns>
+        public IResult Update(HostModel data)
         {
-            // Флаг задержки
-            var flag = false;
-
-            // Выходные данные
-            object? outputData = null;
-
-            using (var ws = new WebSocket("ws://127.0.0.1/host"))
-            {
-                // Обработка получения сообщения с стороннего сервиса
-                ws.OnMessage += (sender, e) =>
-                {
-                    outputData = JsonConvert.DeserializeObject<HostModel>(e.Data);
-
-                    if (((HostModel?)outputData)?.Id == null)
-                    {
-                        outputData = JsonConvert.DeserializeObject<MessageModel>(e.Data);
-                    }
-
-                    flag = true;
-                };
-
-                // Подключение по WebSocket-соединению к приложению
-                ws.Connect();
-
-                ws.Send(JsonConvert.SerializeObject(
-                    new HttpModel(
-                        "/save",
-                        JsonConvert.SerializeObject(data)
-                    )
-                ));
-
-                // Бесконечный цикл для создания задержки обработки сообщения
-                while (!flag)
-                {
-                    // bug(): если убрать Console.WriteLine бесконечный цикл будет длится вечно
-                    Console.WriteLine(flag);
-                }
-
-            }
-
-            return Results.Json(outputData);
-        };
+            return TemplateRequest("/update", JsonConvert.SerializeObject(data));
+        }
 
         /// <summary>
-        /// Получение всех объектов HostModel
+        /// Создание нового объекта в коллекции
         /// </summary>
-        public Func<IResult> getAll = () =>
+        /// <param name="data">Данные объекта</param>
+        /// <returns>Созданный объект</returns>
+        public IResult Create(HostModel data)
         {
-            var flag = false;
-            HostModel[]? outputData = null;
-
-            using (var ws = new WebSocket("ws://127.0.0.1/host"))
-            {
-                ws.OnMessage += (sender, e) =>
-                {
-                    outputData = JsonConvert.DeserializeObject<HostModel[]>(e.Data);
-                    flag = true;
-                };
-
-                ws.Connect();
-
-                ws.Send(JsonConvert.SerializeObject(new HttpModel("/get/all", null)));
-
-                while (!flag)
-                {
-                    Console.WriteLine(flag);
-                }
-
-            }
-
-            return Results.Json(outputData);
-        };
+            return TemplateRequest("/save", JsonConvert.SerializeObject(data));
+        }
 
         /// <summary>
-        /// Получение конкретного объекта AdminModel
+        /// Получение множества объектов в коллекции
         /// </summary>
-        public Func<string, IResult> get = (id) =>
+        /// <returns>Объекты в коллекции</returns>
+        public IResult GetAll()
         {
-            var flag = false;
-            object? outputData = null;
-
-            using (var ws = new WebSocket("ws://127.0.0.1/host"))
-            {
-                ws.OnMessage += (sender, e) =>
-                {
-                    outputData = JsonConvert.DeserializeObject<HostModel>(e.Data);
-
-                    if (((HostModel?)outputData)?.Id == null)
-                    {
-                        outputData = JsonConvert.DeserializeObject<MessageModel>(e.Data);
-                    }
-
-                    flag = true;
-                };
-
-                ws.Connect();
-
-                ws.Send(JsonConvert.SerializeObject(
-                    new HttpModel(
-                        "/get",
-                        id
-                    )
-                ));
-
-                while (!flag)
-                {
-                    Console.WriteLine(flag);
-                }
-            }
-
-            return Results.Json(outputData);
-        };
+            return TemplateRequest("/get/all");
+        }
 
         /// <summary>
-        /// Удаление объекта AdminModel
+        /// Получение объекта из коллекции
         /// </summary>
-        public Func<string, IResult> delete = (id) =>
+        /// <param name="id">Идентификатор объекта в коллекции</param>
+        /// <returns>Найденный объект по идентификатору</returns>
+        public IResult Get(string id)
         {
-            var flag = false;
-            object? outputData = null;
+            return TemplateRequest("/get", id);
+        }
 
-            using (var ws = new WebSocket("ws://127.0.0.1/host"))
-            {
-                ws.OnMessage += (sender, e) =>
-                {
-                    outputData = JsonConvert.DeserializeObject<HostModel>(e.Data);
-
-                    if (((HostModel?)outputData)?.Id == null)
-                    {
-                        outputData = JsonConvert.DeserializeObject<MessageModel>(e.Data);
-                    }
-
-                    flag = true;
-                };
-
-                ws.Connect();
-
-                ws.Send(JsonConvert.SerializeObject(
-                    new HttpModel(
-                        "/delete",
-                        id
-                    )
-                ));
-
-                while (!flag)
-                {
-                    Console.WriteLine(flag);
-                }
-
-            }
-
-            return Results.Json(outputData);
-        };
+        /// <summary>
+        /// Удаление объекта из коллекции
+        /// </summary>
+        /// <param name="id">Идентификатор объекта</param>
+        /// <returns>Удалённый объект</returns>
+        public IResult Delete(string id)
+        {
+            return TemplateRequest("/delete", id);
+        }
     }
 }

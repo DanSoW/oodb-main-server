@@ -1,5 +1,8 @@
 ﻿namespace oodb_project.constants
 {
+    /// <summary>
+    /// Класс, содержащий константы для маршрутов API базы данных Perst
+    /// </summary>
     public class ApiPerstUrl
     {
         /* Запросы на сохранение данных */

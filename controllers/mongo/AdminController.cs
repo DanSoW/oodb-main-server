@@ -3,6 +3,9 @@ using oodb_project.models;
 
 namespace oodb_project.controllers.mongo
 {
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов Admin
+    /// </summary>
     public class AdminController : BaseController<AdminModel>
     {
         public static string LOCAL_URL = "/admin";

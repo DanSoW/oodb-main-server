@@ -3,19 +3,19 @@ using oodb_project.models;
 
 namespace oodb_project.controllers.db4o
 {
-    public class AdminController
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов Admin
+    /// </summary>
+    public class AdminController : BaseController<AdminModel>
     {
-        private static IObjectContainer? _db;
-
-        public AdminController(IObjectContainer db)
-        {
-            _db = db;
-        }
+        public AdminController(IObjectContainer db) : base(db) { }
 
         /// <summary>
-        /// Обновление объекта AdminModel
+        /// Обновление объекта в коллекции
         /// </summary>
-        public Func<AdminModel, IResult> update = (newData) =>
+        /// <param name="data">Данные об объекте в коллекции</param>
+        /// <returns>Обновлённый объект</returns>
+        public IResult Update(AdminModel data)
         {
             if (_db == null)
             {
@@ -24,36 +24,10 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                AdminModel data = _db.Query<AdminModel>(value => value.Id == newData.Id)[0];
-                data.Email = newData.Email;
+                AdminModel findObj = _db.Query<AdminModel>(value => value.Id == data.Id)[0];
+                findObj.Email = data.Email;
 
-                _db.Store(data);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-
-            return Results.Json(newData);
-        };
-
-        /// <summary>
-        /// Создание объекта AdminModel
-        /// </summary>
-        public Func<AdminModel, IResult> create = (data) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Автоматическая генерация UUID
-                data.Id = Guid.NewGuid().ToString();
-
-                // Сохранение модели в ООДБ
-                _db.Store(data);
+                _db.Store(findObj);
             }
             catch (Exception e)
             {
@@ -61,12 +35,24 @@ namespace oodb_project.controllers.db4o
             }
 
             return Results.Json(data);
-        };
+        }
 
         /// <summary>
-        /// Получение всех объектов AdminModel
+        /// Создание нового объекта коллекции
         /// </summary>
-        public Func<IResult> getAll = () =>
+        /// <param name="data">Данные об объекте</param>
+        /// <returns>Созданный объект</returns>
+        public new IResult Create(AdminModel data)
+        {
+            return base.Create(data);
+        }
+
+        /// <summary>
+        /// Удаление объекта из коллекции
+        /// </summary>
+        /// <param name="id">Идентификатор объекта в коллекции</param>
+        /// <returns>Удаленённый объект коллекции</returns>
+        public new IResult Delete(string id)
         {
             if (_db == null)
             {
@@ -75,63 +61,30 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                // Поиск всех данных по текущей модели
-                IObjectSet result = _db.QueryByExample(typeof(AdminModel));
+                var data = _db.Query<AdminModel>(value => value.Id == id);
+                if (data.Count <= 0)
+                {
+                    return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
+                }
 
-                // Возвращение списка моделей
-                return Results.Json(result);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-        };
+                // Удаление связанных данных
+                var monitorApps = _db.Query<MonitorAppModel>(value => value.AdminId == id);
+                foreach (var item in monitorApps)
+                {
+                    _db.Delete(item);
+                }
 
-        /// <summary>
-        /// Получение конкретного объекта AdminModel
-        /// </summary>
-        public Func<string, IResult> get = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
+                var cloneData = data.First();
 
-            try
-            {
-                // Получение конкретной модели
-                AdminModel data = _db.Query<AdminModel>(value => value.Id == id)[0];
+                // Удаление модели
+                _db.Delete(data.First());
 
-                return Results.Json(data);
+                return Results.Json(cloneData);
             }
             catch (Exception)
             {
                 return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
             }
-        };
-
-        /// <summary>
-        /// Удаление объекта AdminModel
-        /// </summary>
-        public Func<string, IResult> delete = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Получение конкретной модели
-                AdminModel data = _db.Query<AdminModel>(value => value.Id == id)[0];
-                _db.Delete(data);
-
-                return Results.Json(data);
-            }
-            catch (Exception)
-            {
-                return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
-            }
-        };
+        }
     }
 }

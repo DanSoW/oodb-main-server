@@ -4,19 +4,19 @@ using oodb_project.models;
 
 namespace oodb_project.controllers.db4o
 {
-    public class DataSourceController
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов DataSource
+    /// </summary>
+    public class DataSourceController : BaseController<DataSourceModel>
     {
-        private static IObjectContainer? _db;
-
-        public DataSourceController(IObjectContainer db)
-        {
-            _db = db;
-        }
+        public DataSourceController(IObjectContainer db) : base(db) { }
 
         /// <summary>
-        /// Обновление объекта DataSourceModel
+        /// Обновление объекта в коллекции
         /// </summary>
-        public Func<DataSourceModel, IResult> update = (newData) =>
+        /// <param name="data">Данные об объекте в коллекции</param>
+        /// <returns>Обновлённый объект</returns>
+        public IResult Update(DataSourceModel data)
         {
             if (_db == null)
             {
@@ -25,37 +25,11 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                DataSourceModel data = _db.Query<DataSourceModel>(value => value.Id == newData.Id)[0];
-                data.Url = newData.Url;
-                data.Name = newData.Name;
+                DataSourceModel findObj = _db.Query<DataSourceModel>(value => value.Id == data.Id)[0];
+                findObj.Url = data.Url;
+                findObj.Name = data.Name;
 
-                _db.Store(data);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-
-            return Results.Json(newData);
-        };
-
-        /// <summary>
-        /// Создание объекта DataSourceModel
-        /// </summary>
-        public Func<DataSourceModel, IResult> create = (data) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Автоматическая генерация UUID
-                data.Id = Guid.NewGuid().ToString();
-
-                // Сохранение модели в ООДБ
-                _db.Store(data);
+                _db.Store(findObj);
             }
             catch (Exception e)
             {
@@ -63,34 +37,23 @@ namespace oodb_project.controllers.db4o
             }
 
             return Results.Json(data);
-        };
+        }
 
         /// <summary>
-        /// Получение объекта DataSource
+        /// Создание нового объекта коллекции
         /// </summary>
-        public Func<string, IResult> get = (id) =>
+        /// <param name="data">Данные об объекте</param>
+        /// <returns>Созданный объект</returns>
+        public new IResult Create(DataSourceModel data)
         {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                DataSourceModel data = _db.Query<DataSourceModel>(value => value.Id == id)[0];
-
-                return Results.Json(data);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-        };
+            return base.Create(data);
+        }
 
         /// <summary>
-        /// Получение всех объектов DataSource
+        /// Получение всех объектов коллекции с помощью SODA-запроса
         /// </summary>
-        public Func<IResult> getAll = () =>
+        /// <returns>Список всех объектов коллекции</returns>
+        public new IResult GetAll()
         {
             if (_db == null)
             {
@@ -101,8 +64,11 @@ namespace oodb_project.controllers.db4o
             {
                 // Получение всех записей из DataSource с помощью SODA-запроса
                 IQuery query = _db.Query();
+
+                // Установка ограничений для поиска
                 query.Constrain(typeof(DataSourceModel));
 
+                // Получение результата поиска
                 IObjectSet result = query.Execute();
 
                 return Results.Json(result);
@@ -111,12 +77,14 @@ namespace oodb_project.controllers.db4o
             {
                 return Results.Json(new MessageModel(e.Message));
             }
-        };
+        }
 
         /// <summary>
-        /// Удаление объекта DataSource
+        /// Каскадное удаление объекта DataSource
         /// </summary>
-        public Func<string, IResult> delete = (id) =>
+        /// <param name="id">Идентификатор объекта в коллекции</param>
+        /// <returns>Удалённый объект</returns>
+        public new IResult Delete(string id)
         {
             if (_db == null)
             {
@@ -125,16 +93,35 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                // Получение конкретной модели
-                DataSourceModel data = _db.Query<DataSourceModel>(value => value.Id == id)[0];
-                _db.Delete(data);
+                var data = _db.Query<DataSourceModel>(value => value.Id == id);
+                if (data.Count <= 0)
+                {
+                    return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
+                }
 
-                return Results.Json(data);
+                var services = _db.Query<ServiceModel>(value => value.DataSourceId == id);
+                foreach (var item in services)
+                {
+                    var hostServices = _db.Query<HostServiceModel>(value => value.ServiceId == item.Id);
+                    foreach(var hostService in hostServices)
+                    {
+                        _db.Delete(hostService);
+                    }
+
+                    _db.Delete(item);
+                }
+
+                var cloneData = data.First();
+
+                // Удаление модели
+                _db.Delete(data.First());
+
+                return Results.Json(cloneData);
             }
             catch (Exception)
             {
                 return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
             }
-        };
+        }
     }
 }

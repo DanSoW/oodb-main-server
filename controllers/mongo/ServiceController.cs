@@ -8,6 +8,9 @@ using oodb_project.controllers.predicates.Service;
 
 namespace oodb_project.controllers.mongo
 {
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов Service
+    /// </summary>
     public class ServiceController : BaseController<ServiceModel>
     {
         public static string LOCAL_URL = "/service";

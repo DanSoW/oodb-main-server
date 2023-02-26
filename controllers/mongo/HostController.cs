@@ -7,6 +7,9 @@ using oodb_project.models.Host;
 
 namespace oodb_project.controllers.mongo
 {
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов Host
+    /// </summary>
     public class HostController : BaseController<HostModel>
     {
         public static string LOCAL_URL = "/host";

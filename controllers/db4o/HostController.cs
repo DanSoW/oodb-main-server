@@ -7,19 +7,17 @@ using oodb_project.models.Host;
 
 namespace oodb_project.controllers.db4o
 {
-    public class HostController
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов Host
+    /// </summary>
+    public class HostController : BaseController<HostModel>
     {
-        private static IObjectContainer? _db;
-
-        public HostController(IObjectContainer db)
-        {
-            _db = db;
-        }
+        public HostController(IObjectContainer db) : base(db) { }
 
         /// <summary>
         /// Выполнение комплексного запроса HostQuery
         /// </summary>
-        public Func<HostQuery, IResult> complex = ([FromBody] values) =>
+        public IResult ComplexQuery([FromBody]HostQuery values)
         {
             if (_db == null)
             {
@@ -28,6 +26,7 @@ namespace oodb_project.controllers.db4o
 
             try
             {
+                // Выполнение комплексного запроса
                 IObjectSet result = _db.Query(
                     new HostComplexQuery
                     {
@@ -50,12 +49,12 @@ namespace oodb_project.controllers.db4o
             {
                 return Results.Json(new MessageModel(e.Message));
             }
-        };
+        }
 
         /// <summary>
         /// Выполнение комплексного запроса HostQuery на базе LINQ
         /// </summary>
-        public Func<HostQuery, IResult> complexLinq = ([FromBody] values) =>
+        public IResult ComplexQueryLinq([FromBody]HostQuery values)
         {
             if (_db == null)
             {
@@ -64,6 +63,7 @@ namespace oodb_project.controllers.db4o
 
             try
             {
+                // Выполнение запроса
                 IEnumerable<HostModel> result = from HostModel model in _db
                                                 where model.IPv4 == values.IPv4 && model.System == values.System
                                                 select model;
@@ -73,7 +73,8 @@ namespace oodb_project.controllers.db4o
                     return Results.Json(new MessageModel($"Объекта не найдено!"));
                 }
 
-                HostModel? data = result.Last();
+                // Возвращение первого совпадения
+                HostModel? data = result.First();
 
                 return Results.Json(data);
             }
@@ -81,12 +82,14 @@ namespace oodb_project.controllers.db4o
             {
                 return Results.Json(new MessageModel(e.Message));
             }
-        };
+        }
 
         /// <summary>
-        /// Обновление объекта Host
+        /// Обновление объекта в коллекции
         /// </summary>
-        public Func<HostModel, IResult> update = (newData) =>
+        /// <param name="data">Данные об объекте в коллекции</param>
+        /// <returns>Обновлённый объект</returns>
+        public IResult Update(HostModel data)
         {
             if (_db == null)
             {
@@ -95,38 +98,12 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                HostModel data = _db.Query<HostModel>(value => value.Id == newData.Id)[0];
-                data.Url = newData.Url;
-                data.IPv4 = newData.IPv4;
-                data.System = newData.System;
+                HostModel host = _db.Query<HostModel>(value => value.Id == data.Id)[0];
+                host.Url = data.Url;
+                host.IPv4 = data.IPv4;
+                host.System = data.System;
 
-                _db.Store(data);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-
-            return Results.Json(newData);
-        };
-
-        /// <summary>
-        /// Создание объекта Host
-        /// </summary>
-        public Func<HostModel, IResult> create = (data) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Автоматическая генерация UUID
-                data.Id = Guid.NewGuid().ToString();
-
-                // Сохранение модели в ООДБ
-                _db.Store(data);
+                _db.Store(host);
             }
             catch (Exception e)
             {
@@ -134,12 +111,24 @@ namespace oodb_project.controllers.db4o
             }
 
             return Results.Json(data);
-        };
+        }
 
         /// <summary>
-        /// Получение всех объектов Host
+        /// Создание нового объекта коллекции
         /// </summary>
-        public Func<IResult> getAll = () =>
+        /// <param name="data">Данные об объекте</param>
+        /// <returns>Созданный объект</returns>
+        public new IResult Create(HostModel data)
+        {
+            return base.Create(data);
+        }
+
+        /// <summary>
+        /// Каскадное удаление объекта Host
+        /// </summary>
+        /// <param name="id">Идентификатор объекта в коллекции</param>
+        /// <returns>Удалённый объект</returns>
+        public new IResult Delete(string id)
         {
             if (_db == null)
             {
@@ -148,63 +137,36 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                // Поиск всех данных по текущей модели
-                IObjectSet result = _db.QueryByExample(typeof(HostModel));
+                var data = _db.Query<HostModel>(value => value.Id == id);
+                if(data.Count <= 0)
+                {
+                    return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
+                }
 
-                // Возвращение списка моделей
-                return Results.Json(result);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-        };
+                // Удаление связанных элементов с таблицей Host
+                var hostServices = _db.Query<HostServiceModel>(value => value.HostId == id);
+                foreach(var item in hostServices)
+                {
+                    _db.Delete(item);
+                }
 
-        /// <summary>
-        /// Получение конкретного объекта Host
-        /// </summary>
-        public Func<string, IResult> get = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
+                var monitorApps = _db.Query<MonitorAppModel>(value => value.HostId == id);
+                foreach (var item in monitorApps)
+                {
+                    _db.Delete(item);
+                }
 
-            try
-            {
-                // Получение конкретной модели
-                HostModel data = _db.Query<HostModel>(value => value.Id == id)[0];
+                var cloneData = data.First();
 
-                return Results.Json(data);
+                // Удаление модели
+                _db.Delete(data.First());
+
+                return Results.Json(cloneData);
             }
             catch (Exception)
             {
                 return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
             }
-        };
-
-        /// <summary>
-        /// Удаление объекта Host
-        /// </summary>
-        public Func<string, IResult> delete = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Получение конкретной модели
-                HostModel data = _db.Query<HostModel>(value => value.Id == id)[0];
-                _db.Delete(data);
-
-                return Results.Json(data);
-            }
-            catch (Exception)
-            {
-                return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
-            }
-        };
+        }
     }
 }

@@ -6,19 +6,18 @@ using oodb_project.models.MonitorApp;
 
 namespace oodb_project.controllers.db4o
 {
-    public class MonitorAppController
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов MonitorApp
+    /// </summary>
+    public class MonitorAppController : BaseController<MonitorAppModel>
     {
-        private static IObjectContainer? _db;
 
-        public MonitorAppController(IObjectContainer db)
-        {
-            _db = db;
-        }
+        public MonitorAppController(IObjectContainer db) : base(db) { }
 
         /// <summary>
         /// Получение объекта MonitorAppModel
         /// </summary>
-        public Func<MonitorAppQuery, IResult> getSoda = ([FromBody] values) =>
+        public IResult GetSoda([FromBody] MonitorAppQuery values)
         {
             if (_db == null)
             {
@@ -27,15 +26,6 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                /*IQuery query = _db.Query();
-                query.Constrain(typeof(MonitorAppModel));
-
-                IConstraint constr = query.Descend("name")
-                        .Constrain(values.Name);
-                query.Descend("url")
-                        .Constrain(values.Url).And(constr);
-                IObjectSet result = query.Execute();*/
-
                 IObjectSet result = _db.QueryByExample(
                     new MonitorAppModel
                     {
@@ -50,12 +40,14 @@ namespace oodb_project.controllers.db4o
             {
                 return Results.Json(new MessageModel(e.Message));
             }
-        };
+        }
 
         /// <summary>
-        /// Обновление объекта MonitorAppModel
+        /// Обновление объекта в коллекции
         /// </summary>
-        public Func<MonitorAppModel, IResult> update = (newData) =>
+        /// <param name="data">Новые данные об объекте в коллекции</param>
+        /// <returns>Обновлённые данные объекта</returns>
+        public IResult Update(MonitorAppModel data)
         {
             if (_db == null)
             {
@@ -64,45 +56,47 @@ namespace oodb_project.controllers.db4o
 
             try
             {
-                IList<MonitorAppModel> list1 = _db.Query<MonitorAppModel>(value => value.Id == newData.Id);
-                if (list1.Count == 0)
+                IList<MonitorAppModel> list1 = _db.Query<MonitorAppModel>(value => value.Id == data.Id);
+                if (list1.Count <= 0)
                 {
-                    return Results.Json(new MessageModel($"Ошибка: объекта типа MonitorAppModel с id = {newData.Id} не найдено!"));
+                    return Results.Json(new MessageModel($"Ошибка: объекта типа MonitorAppModel с id = {data.Id} не найдено!"));
                 }
 
-                MonitorAppModel data = list1[0];
+                MonitorAppModel monitorApp = list1[0];
 
-                IList<HostModel> list2 = _db.Query<HostModel>(value => value.Id == newData.HostId);
-                if (list2.Count == 0)
+                IList<HostModel> list2 = _db.Query<HostModel>(value => value.Id == monitorApp.HostId);
+                if (list2.Count <= 0)
                 {
-                    return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {newData.HostId} не найдено!"));
+                    return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {monitorApp.HostId} не найдено!"));
                 }
 
-                IList<AdminModel> list3 = _db.Query<AdminModel>(value => value.Id == newData.AdminId);
-                if (list3.Count == 0)
+                IList<AdminModel> list3 = _db.Query<AdminModel>(value => value.Id == monitorApp.AdminId);
+                if (list3.Count <= 0)
                 {
-                    return Results.Json(new MessageModel($"Ошибка: объекта типа AdminModel с id = {newData.AdminId} не найдено!"));
+                    return Results.Json(new MessageModel($"Ошибка: объекта типа AdminModel с id = {monitorApp.AdminId} не найдено!"));
                 }
 
-                data.Name = newData.Name;
-                data.Url = newData.Url;
-                data.HostId = newData.HostId;
-                data.AdminId = newData.AdminId;
+                monitorApp.Name = data.Name;
+                monitorApp.Url = data.Url;
+                monitorApp.HostId = data.HostId;
+                monitorApp.AdminId = data.AdminId;
 
-                _db.Store(data);
+                _db.Store(monitorApp);
             }
             catch (Exception e)
             {
                 return Results.Json(new MessageModel(e.Message));
             }
 
-            return Results.Json(newData);
-        };
+            return Results.Json(data);
+        }
 
         /// <summary>
-        /// Создание объекта MonitorAppModel
+        /// Создание нового объекта в коллекции
         /// </summary>
-        public Func<MonitorAppModel, IResult> create = (data) =>
+        /// <param name="data">Данные об объекте</param>
+        /// <returns>Созданный объект</returns>
+        public new IResult Create(MonitorAppModel data)
         {
             if (_db == null)
             {
@@ -115,13 +109,13 @@ namespace oodb_project.controllers.db4o
                 data.Id = Guid.NewGuid().ToString();
 
                 IList<HostModel> list2 = _db.Query<HostModel>(value => value.Id == data.HostId);
-                if (list2.Count == 0)
+                if (list2.Count <= 0)
                 {
                     return Results.Json(new MessageModel($"Ошибка: объекта типа HostModel с id = {data.HostId} не найдено!"));
                 }
 
                 IList<AdminModel> list3 = _db.Query<AdminModel>(value => value.Id == data.AdminId);
-                if (list3.Count == 0)
+                if (list3.Count <= 0)
                 {
                     return Results.Json(new MessageModel($"Ошибка: объекта типа AdminModel с id = {data.AdminId} не найдено!"));
                 }
@@ -135,78 +129,6 @@ namespace oodb_project.controllers.db4o
             }
 
             return Results.Json(data);
-        };
-
-        /// <summary>
-        /// Получение объекта MonitorAppModel
-        /// </summary>
-        public Func<string, IResult> get = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                MonitorAppModel data = _db.Query<MonitorAppModel>(value => value.Id == id)[0];
-
-                return Results.Json(data);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-        };
-
-        /// <summary>
-        /// Получение всех объектов MonitorAppModel
-        /// </summary>
-        public Func<IResult> getAll = () =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Получение всех записей из DataSource с помощью SODA-запроса
-                IQuery query = _db.Query();
-                query.Constrain(typeof(MonitorAppModel));
-
-                IObjectSet result = query.Execute();
-
-                return Results.Json(result);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-        };
-
-        /// <summary>
-        /// Удаление объекта MonitorAppModel
-        /// </summary>
-        public Func<string, IResult> delete = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Получение конкретной модели
-                MonitorAppModel data = _db.Query<MonitorAppModel>(value => value.Id == id)[0];
-                _db.Delete(data);
-
-                return Results.Json(data);
-            }
-            catch (Exception)
-            {
-                return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
-            }
-        };
+        }
     }
 }

@@ -8,20 +8,20 @@ using oodb_project.controllers.predicates.Service;
 
 namespace oodb_project.controllers.db4o
 {
-    public class ServiceController
+    /// <summary>
+    /// Класс определяющий контроллеры для коллекции объектов Service
+    /// </summary>
+    public class ServiceController : BaseController<ServiceModel>
     {
-        private static IObjectContainer? _db;
-
-        public ServiceController(IObjectContainer db)
-        {
-            _db = db;
-        }
+        public ServiceController(IObjectContainer db) : base(db) { }
 
 
         /// <summary>
-        /// Получение всех объектов ServiceModel
+        /// Получение списка объектов коллекции, с помощью комплексного запроса
         /// </summary>
-        public Func<ServiceQuery, IResult> getAllComplex = ([FromBody] values) =>
+        /// <param name="values">Значения фильтра для поиска</param>
+        /// <returns>Список объектов</returns>
+        public IResult GetAllComplex([FromBody] ServiceQuery values)
         {
             if (_db == null)
             {
@@ -43,12 +43,14 @@ namespace oodb_project.controllers.db4o
             {
                 return Results.Json(new MessageModel(e.Message));
             }
-        };
+        }
 
         /// <summary>
-        /// Получение всех объектов ServiceModel
+        /// Получение списка объектов с помощью LINQ
         /// </summary>
-        public Func<ServiceQuery, IResult> getAllComplexLinq = ([FromBody] values) =>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public IResult GetAllLinq([FromBody] ServiceQuery values)
         {
             if (_db == null)
             {
@@ -72,12 +74,12 @@ namespace oodb_project.controllers.db4o
             {
                 return Results.Json(new MessageModel(e.Message));
             }
-        };
+        }
 
         /// <summary>
         /// Обновление объекта ServiceModel
         /// </summary>
-        public Func<ServiceModel, IResult> update = (newData) =>
+        public IResult Update(ServiceModel newData)
         {
             if (_db == null)
             {
@@ -113,12 +115,14 @@ namespace oodb_project.controllers.db4o
             }
 
             return Results.Json(newData);
-        };
+        }
 
         /// <summary>
-        /// Создание объекта ServiceModel
+        /// Создание нового объекта в коллекции
         /// </summary>
-        public Func<ServiceModel, IResult> create = (data) =>
+        /// <param name="data">Данные об объекте</param>
+        /// <returns>Созданный объект</returns>
+        public new IResult Create(ServiceModel data)
         {
             if (_db == null)
             {
@@ -145,78 +149,6 @@ namespace oodb_project.controllers.db4o
             }
 
             return Results.Json(data);
-        };
-
-        /// <summary>
-        /// Получение объекта ServiceModel
-        /// </summary>
-        public Func<string, IResult> get = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                ServiceModel data = _db.Query<ServiceModel>(value => value.Id == id)[0];
-
-                return Results.Json(data);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-        };
-
-        /// <summary>
-        /// Получение всех объектов ServiceModel
-        /// </summary>
-        public Func<IResult> getAll = () =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Получение всех записей из DataSource с помощью SODA-запроса
-                IQuery query = _db.Query();
-                query.Constrain(typeof(ServiceModel));
-
-                IObjectSet result = query.Execute();
-
-                return Results.Json(result);
-            }
-            catch (Exception e)
-            {
-                return Results.Json(new MessageModel(e.Message));
-            }
-        };
-
-        /// <summary>
-        /// Удаление объекта ServiceModel
-        /// </summary>
-        public Func<string, IResult> delete = (id) =>
-        {
-            if (_db == null)
-            {
-                return Results.Json(new MessageModel("Подключение к ООБД отсутствует"));
-            }
-
-            try
-            {
-                // Получение конкретной модели
-                ServiceModel data = _db.Query<ServiceModel>(value => value.Id == id)[0];
-                _db.Delete(data);
-
-                return Results.Json(data);
-            }
-            catch (Exception)
-            {
-                return Results.Json(new MessageModel($"Модели с Id = {id} нет в ООБД"));
-            }
-        };
+        }
     }
 }
